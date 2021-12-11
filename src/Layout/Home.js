@@ -1,15 +1,13 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { DeckList } from "./DeckList";
 
-export const Home = ({decks}) => {
-    const history = useHistory();
+export const Home = ({decks, setDecks}) => {
 
-    const createButtonHandler = () => history.push("/new")
     return    (
     <div className="">
-    <button className="btn btn-secondary" onClick={createButtonHandler}>Create Deck</button>
-    <DeckList decks={decks} />
+    <NavLink to="/new" className="btn btn-secondary btn-lg" style={{marginLeft: "40px"}} >Create Deck</NavLink>
+    <DeckList decks={decks} setDecks={setDecks} />
     </div>
 )
 }

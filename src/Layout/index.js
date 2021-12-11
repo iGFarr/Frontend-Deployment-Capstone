@@ -1,21 +1,23 @@
 import React, { useState, useEffect} from "react";
 import Header from "./Header";
+import Deck from "./Deck.js"
+import EditDeck from "./EditDeck.js"
 import NotFound from "./NotFound";
 import Home from "./Home.js"
+import Study from "./Study.js"
 import { listDecks } from "../utils/api/index"
-import { useRouteMatch, Route, Switch } from "react-router-dom";
+import {Route, Switch } from "react-router-dom";
 
 
 
 
 function Layout() {
   const [decks, setDecks] = useState([]);
-  const [cards, setCards] = useState([]);
+
 
   useEffect(() => {
     async function loadDecks(){
       const response = await listDecks();
-      console.log(response);
       setDecks(response);
     }
     loadDecks();
@@ -26,7 +28,16 @@ function Layout() {
       <div className="container">
         <Switch>
             <Route exact path="/">
-              <Home decks={decks} />
+              <Home decks={decks} setDecks={setDecks} />
+            </Route>
+            <Route path="/decks/:deckId/study">
+              <Study />
+            </Route>
+            <Route path="/decks/:deckId/edit">
+              <EditDeck />
+            </Route>
+            <Route path="/decks/:deckId">
+              <Deck />
             </Route>
             <Route>
               <NotFound />
