@@ -1,16 +1,20 @@
 import React from "react";
-import { NavLink } from "react-router-dom"
+import { NavLink, useHistory } from "react-router-dom"
 import trashCan from "../images/trashCan.jpg"
+import { deleteDeck } from "../utils/api";
 
 
 
 
 export const DeckList = ({decks, setDecks}) => {
+    const history = useHistory();
 
     const deleteHandler = (event) => {
         const id = parseFloat(event.target.id);
         if (window.confirm("Delete this deck?\n\nYou will not be able to recover it.")){
-            setDecks((currentDecks) => currentDecks.filter((deck) => deck.id !== id))
+                deleteDeck(id);
+                history.push("/");
+          
         }
     }
     const list = decks.map((deck) => {
