@@ -3,6 +3,7 @@ import Header from "./Header";
 import Deck from "./Deck.js"
 import EditDeck from "./EditDeck.js"
 import NotFound from "./NotFound";
+import CreateDeck from "./CreateDeck.js";
 import Home from "./Home.js"
 import Study from "./Study.js"
 import { listDecks } from "../utils/api/index"
@@ -29,6 +30,9 @@ function Layout() {
         <Switch>
             <Route exact path="/">
               <Home decks={decks} setDecks={setDecks} />
+            </Route>
+            <Route path="/decks/new">
+              <CreateDeck decks={decks} />
             </Route>
             <Route path="/decks/:deckId/study">
               <Study />

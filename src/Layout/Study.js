@@ -4,7 +4,7 @@ import { useParams, NavLink, useHistory} from "react-router-dom";
 
 function Study(){
     const { deckId } = useParams();
-    const [deck, setDeck] = useState({});
+    const [deck, setDeck] = useState({cards: [{front: "", back: ""}]});
     const [cardIndex, setCardIndex] = useState(0);
     const [flipped, setFlipped] = useState(false);
     const [card, setCard] = useState({});
@@ -24,7 +24,7 @@ function Study(){
         if (cardIndex === deck.cards.length){
             if(window.confirm("Restart cards?\n\nClick 'cancel' to return to the home page")){
                 setCardIndex(0);
-                setCard(deck.cards[cardIndex]);
+                setCard(deck.cards[0]);
             }
             else {history.push("/")}}
         

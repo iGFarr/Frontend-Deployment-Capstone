@@ -5,8 +5,8 @@ import { DeckList } from "./DeckList";
 export const Home = ({decks, setDecks}) => {
 
     return    (
-    <div className="">
-    <NavLink to="/new" className="btn btn-secondary btn-lg" style={{marginLeft: "40px"}} >Create Deck</NavLink>
+    <div>
+    <NavLink to="decks/new" className="btn btn-secondary btn-lg" style={{marginLeft: "40px"}} >Create Deck</NavLink>
     <DeckList decks={decks} setDecks={setDecks} />
     </div>
 )

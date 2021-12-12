@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams, NavLink, useRouteMatch } from "react-router-dom"
+import { useParams, NavLink, useRouteMatch, useHistory } from "react-router-dom"
 import { readDeck } from "../utils/api";
+import { deleteDeck } from "../utils/api";
 import trashCan from "../images/trashCan.jpg"
 
 function Deck(){
     const { deckId } = useParams();
     const [deck, setDeck] = useState({});
     const {url} = useRouteMatch();
+    const history = useHistory();
 
 useEffect(() => {
     async function loadDeck(){
@@ -16,7 +18,10 @@ useEffect(() => {
 }, [deckId])
 const buttonMargin = {marginRight: "20px"};
 
-
+const deleteHandler = () => {
+      deleteDeck(deck.id);
+      history.push("/");
+}
 
 return (
     <div className="d-flex flex-column justify-content-center">
@@ -32,7 +37,7 @@ return (
             <NavLink to={`${url}/edit`} style={buttonMargin} className="btn btn-secondary">Edit</NavLink>
             <NavLink to={`${url}/study`} style={buttonMargin} className="btn btn-primary">Study</NavLink>
             <NavLink to={`${url}/cards/new`} style={buttonMargin} className="btn btn-primary">Add Cards</NavLink>
-            <button id={deckId} className="btn btn-danger" ><img src={trashCan} alt="trash can" className="img-fluid" style={{width: "30px"}} /></button>
+            <button id={deckId} onClick={deleteHandler} className="btn btn-danger" ><img src={trashCan} alt="trash can" className="img-fluid" style={{width: "30px"}} /></button>
             <br/>
             <br/>
             <h2>Cards</h2>
