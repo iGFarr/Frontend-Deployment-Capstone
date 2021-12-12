@@ -7,7 +7,6 @@ function CreateDeck({ decks }){
         name: "",
         description: "",
     }
-
     const [formData, setFormData] = useState({...initialFormState});
     const [newDeck, setNewDeck] = useState({});
     const history = useHistory();

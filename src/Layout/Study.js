@@ -48,6 +48,13 @@ function Study(){
             </nav>
             <br />
             <h1>Study: {deck.name}</h1>
+            {deck.cards.length < 3 ? (
+                <div>
+                    <h3>Not enough cards.</h3>
+                    <p>You need at least 3 cards to study. There are {deck.cards.length} cards in this deck.</p>
+                    <NavLink to={`/decks/${deck.id}/cards/new`} className="btn btn-primary">Add cards</NavLink>
+                </div>
+            ) :
             <div className="d-flex card">
                 <div className="card-body">
                     <h2 className="card-title">Card {cardIndex + 1} of {deck.cards.length}</h2>
@@ -56,6 +63,7 @@ function Study(){
                     {flipped && <button className="btn btn-primary" onClick={nextHandler}>Next</button>}
                 </div>
             </div>
+            }
         </div>
     )
 }

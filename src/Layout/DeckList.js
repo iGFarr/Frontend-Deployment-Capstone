@@ -6,8 +6,9 @@ import { deleteDeck } from "../utils/api";
 
 
 
-export const DeckList = ({decks, setDecks}) => {
+export const DeckList = ({decks}) => {
     const history = useHistory();
+
 
     const deleteHandler = (event) => {
         const id = parseFloat(event.target.id);

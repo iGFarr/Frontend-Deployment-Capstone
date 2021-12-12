@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams, NavLink, useRouteMatch, useHistory } from "react-router-dom"
+import { useParams, NavLink, useRouteMatch, useHistory} from "react-router-dom"
 import { readDeck } from "../utils/api";
 import { deleteDeck } from "../utils/api";
 import trashCan from "../images/trashCan.jpg"
 
-function Deck(){
+function Deck({deck, setDeck}){
     const { deckId } = useParams();
-    const [deck, setDeck] = useState({});
     const {url} = useRouteMatch();
     const history = useHistory();
 

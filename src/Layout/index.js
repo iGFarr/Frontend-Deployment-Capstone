@@ -14,6 +14,8 @@ import {Route, Switch } from "react-router-dom";
 
 function Layout() {
   const [decks, setDecks] = useState([]);
+  const [deck, setDeck] = useState({});
+  const [formData, setFormData] = useState({});
 
 
   useEffect(() => {
@@ -29,19 +31,19 @@ function Layout() {
       <div className="container">
         <Switch>
             <Route exact path="/">
-              <Home decks={decks} setDecks={setDecks} />
+              <Home deck={deck} decks={decks} setDecks={setDecks} />
             </Route>
             <Route path="/decks/new">
-              <CreateDeck decks={decks} />
+              <CreateDeck decks={decks} formData={formData}/>
             </Route>
             <Route path="/decks/:deckId/study">
               <Study />
             </Route>
             <Route path="/decks/:deckId/edit">
-              <EditDeck />
+              <EditDeck deck={deck} />
             </Route>
             <Route path="/decks/:deckId">
-              <Deck />
+              <Deck deck={deck} setDeck={setDeck} />
             </Route>
             <Route>
               <NotFound />
