@@ -15,13 +15,12 @@ function CreateDeck({ decks }){
         const value = target.value;
         setFormData({...formData, [target.name]: value,})
         setNewDeck({id: (decks.length + 1), name: formData.name, description: formData.description});
-        console.log(newDeck)
     }
 
-    const handleSubmit = () => {
-        createDeck(newDeck);
-        history.push(`/decks/${newDeck.id}`);
-        
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await createDeck(newDeck);
+        history.push(`/decks/${newDeck.id}`);        
     }
     return (
     <div>

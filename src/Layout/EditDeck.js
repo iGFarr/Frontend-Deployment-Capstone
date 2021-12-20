@@ -1,71 +1,86 @@
-import React, { useState } from "react";
-import { NavLink, useHistory } from "react-router-dom";
-import { updateDeck } from "../utils/api";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
+import DeckForm from "./DeckForm";
+import { readDeck, updateDeck } from "../utils/api/index";
 
-function EditDeck({ deck }){
-    const [edittedDeck, setEdittedDeck] = useState({});
-    const initialFormState = {
-        id: deck.id,
-        name: deck.name,
-        description: deck.description
+function EditDeck() {
+  const history = useHistory();
+  const { deckId } = useParams();
+  const [deck, setDeck] = useState({});
+
+  const name = deck.name ? deck.name : "Deck Name";
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    async function loadDeck() {
+      try {
+        const deckInfo = await readDeck(deckId, abortController.signal);
+        setDeck(deckInfo);
+      } catch (error) {
+        if (error.name === "AbortError") {
+          console.info("aborted");
+        } else {
+          throw error;
+        }
+      }
     }
-    const history = useHistory();
-    const [formData, setFormData] = useState({...initialFormState});
 
-    const handleChange = ({target}) => {
-        const value = target.value;
-        setFormData({...formData, [target.name]: value})
-        setEdittedDeck({id: deck.id, name: formData.name, description: formData.description});
+    loadDeck();
+
+    return () => abortController.abort();
+  }, [deckId]);
+
+  function handleSubmit(deck) {
+    const abortController = new AbortController();
+
+    async function editDeck() {
+      try {
+        const deckInfo = await updateDeck(deck, abortController.signal);
+        history.push(`/decks/${deckInfo.id}`);
+      } catch (err) {
+        if (err.name === "AbortError") {
+          console.info("aborted");
+        } else {
+          throw err;
+        }
+      }
     }
+    editDeck();
 
-    const handleSubmit = () => {
-        updateDeck(edittedDeck);
-        history.push(`/decks/${deck.id}`);
-        
-    }
+    return () => {
+      abortController.abort();
+    };
+  }
+  function handleCancel() {
+    history.push(`/decks/${deckId}`);
+  }
 
-    return (
-        <div>
-            <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
-                    <li className="breadcrumb-item"><NavLink to={`/decks/${deck.id}`}>{deck.name}</NavLink></li>
-                    <li className="breadcrumb-item active" aria-current="page"><NavLink to={`/decks/${deck.id}/edit`} >Edit Deck</NavLink></li>
-                </ol>
-            </nav>
-            <h1>Edit Deck</h1>
-            <form onSubmit={handleSubmit} style={{display: "inline-block", width: "100%"}}>
-                <label htmlFor="name">
-                    <p>Name</p>
-                    <input
-                    style={{width: "100%"}}
-                    id="name"
-                    type="text"
-                    name="name"
-                    onChange={handleChange}
-                    value={formData.name}
-                    placeholder="Deck Name"
-                    />
-                </label>
-                <br/>
-                <p>Description</p>
-                <label htmlFor="description">
-                    <textarea 
-                    id="description" 
-                    name="description" 
-                    onChange={handleChange} 
-                    value={formData.description} 
-                    placeholder="Brief description of the deck"
-                    ></textarea>
-                </label>
-                <div>
-                    <NavLink to={`/decks/${deck.id}`} className="btn mr-3 btn-secondary">Cancel</NavLink>
-                <button type="submit" className="btn btn-primary">
-                    Submit
-                </button>
-                </div>
-            </form>
-        </div>
-    )}
+  return (
+    <div>
+      <nav aria-label='breadcrumb'>
+        <ol className='breadcrumb'>
+          <li className='breadcrumb-item'>
+            <Link to='/'>
+              <i className='bi bi-house-door-fill'></i> Home
+            </Link>
+          </li>
+          <li className='breadcrumb-item'>
+            <Link to={`/decks/${deckId}`}>{name}</Link>
+          </li>
+          <li className='breadcrumb-item active' aria-current='page'>
+            Edit Deck
+          </li>
+        </ol>
+      </nav>
+      <h1>Edit Deck</h1>
+      <DeckForm
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+        deck={deck}
+      />
+    </div>
+  );
+}
 
 export default EditDeck;

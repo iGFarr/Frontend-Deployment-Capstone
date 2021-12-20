@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="app-routes">
       <Switch>
-        <Route path="/">
+        <Route>
           <Layout />
         </Route>
       </Switch>

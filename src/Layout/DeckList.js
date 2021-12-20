@@ -6,14 +6,15 @@ import { deleteDeck } from "../utils/api";
 
 
 
-export const DeckList = ({decks}) => {
+export const DeckList = ({decks, setDecks}) => {
     const history = useHistory();
 
 
-    const deleteHandler = (event) => {
-        const id = parseFloat(event.target.id);
+    const deleteHandler = async (event) => {
+        const id = parseFloat(event.currentTarget.id);
         if (window.confirm("Delete this deck?\n\nYou will not be able to recover it.")){
-                deleteDeck(id);
+                await deleteDeck(id);
+                setDecks(decks.filter((deck) => deck.id !== id));
                 history.push("/");
           
         }
